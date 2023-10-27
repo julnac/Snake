@@ -1,72 +1,47 @@
 import pygame
-from Direction import Direction
+
+from game_functions import *
+from constants import *
+from models.Food import Food
+from models.Snake import Snake
 
 pygame.init()
-screen = pygame.display.set_mode((400, 500))
+screen = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
-WIDTH = screen.get_width()
-HEIGHT = screen.get_height()
-
-player_pos = pygame.Vector2(WIDTH / 2, HEIGHT / 2)
+player_pos = pygame.Vector2(GAME_WIDTH / 2, GAME_HEIGHT / 2)
 direction: Direction = Direction.RIGHT
 
-test_surface = pygame.Surface((100, 200))
-test_surface.fill((0, 0, 255))
+# INITIATING OBJECTS----------------------------
+fruit = Food()
+snake = Snake()
 
-# constances
+SCREEN_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(SCREEN_UPDATE, 150)
 
-GAME_WIDTH = 700
-GAME_HEIGHT = 700
-SPEED = 50
-SPACE_SIZE = 50
-BODY_PARTS = 3
-SNAKE_COLOR = "00FF00"
-FOOD_COLOR = "FF0000"
-BACKGROUND_COLOR = "000000"
-
-class Snake:
-    pass
-
-class Food:
-    pass
-
-def next_turn():
-    pass
-
-def set_direction(direction_local):
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        direction_local = Direction.UP
-    if keys[pygame.K_s]:
-        direction_local = Direction.DOWN
-    if keys[pygame.K_a]:
-        direction_local = Direction.LEFT
-    if keys[pygame.K_d]:
-        direction_local = Direction.RIGHT
-
-    return direction_local
-
-def check_collisions():
-    pass
-
-def game_over():
-    pass
-
+# GAME LOOP-------------------------------------
 while running:
 
-    # CHECK FOR EVERY KIND OF EVENT
+    # CHECK FOR EVERY KIND OF EVENT------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == SCREEN_UPDATE:
+            snake.move_snake(screen)
+        '''if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                snake.direction = Vector2(0,-1)'''
 
+    # PROJECTING OBJECTS -----------------------
     screen.fill((175, 215, 70))
     pygame.draw.circle(screen, "red", player_pos, 40)
 
-    screen.blit(test_surface, (200, 250))
+    fruit.draw_food(screen)
+    snake.draw_snake(screen)
 
+    # PLACE FOR EVERY ACTION IN THE GAME !!!-----
     direction = set_direction(direction)
 
     if direction == Direction.UP:
@@ -78,17 +53,9 @@ while running:
     elif direction == Direction.RIGHT:
         player_pos.x += 300 * dt
 
+    direction = bounce_from_wall(direction, player_pos)
 
-    if player_pos.y < 0:
-        direction = Direction.DOWN
-    if player_pos.y > HEIGHT:
-        direction = Direction.UP
-    if player_pos.x < 0:
-        direction = Direction.RIGHT
-    if player_pos.x > WIDTH:
-        direction = Direction.LEFT
-
-    # DRAW ALL OUR ELEMENTS
+    # DRAW ALL OUR ELEMENTS-----------------------
     pygame.display.flip()
     # HOW MANY TIMES MAXIMUM CAN THIS WHILE LOOP RUN PER SECOND (TO PREVENT INEQUALITIES)
     dt = clock.tick(60) / 1000
