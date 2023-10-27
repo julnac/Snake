@@ -1,5 +1,3 @@
-import pygame
-
 from game_functions import *
 from constants import *
 from models.Food import Food
@@ -11,8 +9,8 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player_pos = pygame.Vector2(GAME_WIDTH / 2, GAME_HEIGHT / 2)
-direction: Direction = Direction.RIGHT
+# player_pos = pygame.Vector2(GAME_WIDTH / 2, GAME_HEIGHT / 2)
+# direction: Direction = Direction.RIGHT
 
 # INITIATING OBJECTS----------------------------
 fruit = Food()
@@ -35,25 +33,12 @@ while running:
                 snake.direction = Vector2(0,-1)'''
 
     # PROJECTING OBJECTS -----------------------
-    screen.fill((175, 215, 70))
-    pygame.draw.circle(screen, "red", player_pos, 40)
+    screen.fill((199, 215, 156))
 
     fruit.draw_food(screen)
     snake.draw_snake(screen)
 
     # PLACE FOR EVERY ACTION IN THE GAME !!!-----
-    direction = set_direction(direction)
-
-    if direction == Direction.UP:
-        player_pos.y -= 300 * dt
-    elif direction == Direction.DOWN:
-        player_pos.y += 300 * dt
-    elif direction == Direction.LEFT:
-        player_pos.x -= 300 * dt
-    elif direction == Direction.RIGHT:
-        player_pos.x += 300 * dt
-
-    direction = bounce_from_wall(direction, player_pos)
 
     # DRAW ALL OUR ELEMENTS-----------------------
     pygame.display.flip()
