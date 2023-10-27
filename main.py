@@ -12,9 +12,28 @@ dt = 0
 # player_pos = pygame.Vector2(GAME_WIDTH / 2, GAME_HEIGHT / 2)
 # direction: Direction = Direction.RIGHT
 
+
+class Main:
+    def __init__(self):
+        self.snake = Snake(1, 0)
+        self.fruit = Food()
+
+    def update(self):
+        self.snake.move_snake()
+        self.check_collision()
+
+    def draw_elements(self):
+        self.fruit.draw_food(screen)
+        self.snake.draw_snake(screen)
+
+    def check_collision(self):
+        if self.fruit.pos == self.snake.body[0]:
+            self.fruit.randomise()
+            self.snake.add_block()
+
+
 # INITIATING OBJECTS----------------------------
-fruit = Food()
-snake = Snake()
+main_game = Main()
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 150)
@@ -27,16 +46,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == SCREEN_UPDATE:
-            snake.move_snake(screen)
-        '''if event.type == pygame.KEYDOWN:
+            main_game.update()
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                snake.direction = Vector2(0,-1)'''
+                main_game.snake.direction = (0, -1)
+            if event.key == pygame.K_DOWN:
+                main_game.snake.direction = (0, 1)
+            if event.key == pygame.K_RIGHT:
+                main_game.snake.direction = (1, 0)
+            if event.key == pygame.K_LEFT:
+                main_game.snake.direction = (-1, 0)
 
     # PROJECTING OBJECTS -----------------------
     screen.fill((199, 215, 156))
 
-    fruit.draw_food(screen)
-    snake.draw_snake(screen)
+    main_game.draw_elements()
 
     # PLACE FOR EVERY ACTION IN THE GAME !!!-----
 
