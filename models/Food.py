@@ -1,9 +1,8 @@
 from pygame.math import Vector2
+
 from constants import *
 import pygame
 import random
-
-
 
 
 class Food:
