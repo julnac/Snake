@@ -16,7 +16,7 @@ dt = 0
 
 class Main:
     def __init__(self):
-        self.snake = Snake(1, 0)
+        self.snake = Snake()
         self.fruit = Food()
 
     def update(self):
@@ -40,10 +40,10 @@ class Main:
             if block == self.snake.body[0]:
                 self.game_over()
 
-
     def game_over(self):
         pygame.quit()
         sys.exit()
+
 
 # INITIATING OBJECTS----------------------------
 main_game = Main()
@@ -62,13 +62,17 @@ while running:
             main_game.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                main_game.snake.direction = (0, -1)
+                if main_game.snake.direction[1] != 1:
+                    main_game.snake.direction = (0, -1)
             if event.key == pygame.K_DOWN:
-                main_game.snake.direction = (0, 1)
+                if main_game.snake.direction[1] != -1:
+                    main_game.snake.direction = (0, 1)
             if event.key == pygame.K_RIGHT:
-                main_game.snake.direction = (1, 0)
+                if main_game.snake.direction[0] != -1:
+                    main_game.snake.direction = (1, 0)
             if event.key == pygame.K_LEFT:
-                main_game.snake.direction = (-1, 0)
+                if main_game.snake.direction[0] != 1:
+                    main_game.snake.direction = (-1, 0)
 
     # PROJECTING OBJECTS -----------------------
     screen.fill((199, 215, 156))
