@@ -1,17 +1,13 @@
-from game_functions import *
 from constants import *
 from models.Food import Food
 from models.Snake import Snake
-import sys
+import sys, pygame
 
 pygame.init()
 screen = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 clock = pygame.time.Clock()
 running = True
-dt = 0
-
-# player_pos = pygame.Vector2(GAME_WIDTH / 2, GAME_HEIGHT / 2)
-# direction: Direction = Direction.RIGHT
+apple = pygame.image.load('Graphics/apple.png').convert_alpha()
 
 
 class Main:
@@ -25,7 +21,7 @@ class Main:
         self.check_fail()
 
     def draw_elements(self):
-        self.fruit.draw_food(screen)
+        self.fruit.draw_food(screen, apple)
         self.snake.draw_snake(screen)
 
     def check_collision(self):
