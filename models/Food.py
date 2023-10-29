@@ -1,14 +1,17 @@
 from pygame.math import Vector2
 
+from GameService import GameService
+from GameObjectInterface import GameObjectInterface
 from constants import *
 import pygame
-import random
 
 
-class Food:
-    # create an x and y position
-    def __init__(self):
-        self.randomise()
+class Food(GameObjectInterface):
+    def __init__(self, game_service: GameService):
+        self.game_service = game_service
+        super().__init__(game_service)
+
+        self.pos = self.init_position()
 
     # draw a square
     def draw_food(self, screen, image):
@@ -16,7 +19,8 @@ class Food:
         screen.blit(image, food_rect)
         # pygame.draw.rect(screen, (126, 166, 114), food_rect)
 
-    def randomise(self):
-        self.x = random.randint(0, CELL_NUMBER - 1)
-        self.y = random.randint(0, CELL_NUMBER - 1)
-        self.pos = Vector2(self.x, self.y)
+    def init_position(self) -> Vector2:
+        return self.game_service.initial_notify(self)
+
+    def move(self):
+        self.game_service.notify(self, self.pos)

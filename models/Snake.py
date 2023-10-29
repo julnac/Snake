@@ -7,8 +7,9 @@ from constants import *
 import pygame
 
 
-class Snake(GameObjectInterface):
-    def __init__(self):
+class Snake:
+    def __init__(self, game_service):
+        self.game_service = game_service
         self.body = [Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)]
         self.direction = Vector2(1, 0)
         self.new_block = False
@@ -41,3 +42,6 @@ class Snake(GameObjectInterface):
 
     def add_block(self):
         self.new_block = True
+
+    def get_head(self):
+        return self.body[0]

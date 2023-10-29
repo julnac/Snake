@@ -1,12 +1,15 @@
 from pygame.math import Vector2
 
+from GameObjectInterface import GameObjectInterface
+from MediatorInterface import MediatorInterface
 from constants import *
 import pygame
 import random
 
 
-class Tnt:
-    def __init__(self):
+class Tnt(GameObjectInterface):
+    def __init__(self, game_service):
+        super().__init__(game_service)
         self.randomise()
 
     def draw_tnt(self, screen, image):
